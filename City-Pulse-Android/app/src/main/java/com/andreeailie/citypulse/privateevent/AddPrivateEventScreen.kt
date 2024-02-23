@@ -1,4 +1,4 @@
-package com.andreeailie.citypulse.profile
+package com.andreeailie.citypulse.privateevent
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,26 +17,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreeailie.citypulse.R
-import com.andreeailie.citypulse.main.SetTitle
 
 @Preview
 @Composable
-fun ProfileScreen(
+fun AddPrivateEventScreen(
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
     ) {
-        SetTitle(modifier = modifier)
-        SetScreenTitle(modifier = modifier)
+        SetScreenTitle(modifier = modifier, stringResource(id = R.string.add_private_event_screen))
     }
 }
 
 @Composable
-fun SetScreenTitle(modifier: Modifier = Modifier) {
+fun SetScreenTitle(
+    modifier: Modifier = Modifier,
+    screenTitle: String
+) {
     Row(
         modifier = modifier
-            .padding(start = 25.dp, top = 10.dp, bottom = 20.dp)
+            .padding(start = 25.dp, top = 65.dp, bottom = 20.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -46,7 +47,7 @@ fun SetScreenTitle(modifier: Modifier = Modifier) {
         )
         {
             Text(
-                text = stringResource(id = R.string.profile_screen),
+                text = screenTitle,
                 textAlign = TextAlign.Left,
                 color = colorResource(R.color.black),
                 style = MaterialTheme.typography.headlineMedium,

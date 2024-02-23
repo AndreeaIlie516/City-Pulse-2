@@ -1,4 +1,4 @@
-package com.andreeailie.citypulse
+package com.andreeailie.citypulse.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

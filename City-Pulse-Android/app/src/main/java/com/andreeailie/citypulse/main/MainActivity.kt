@@ -1,4 +1,4 @@
-package com.andreeailie.citypulse
+package com.andreeailie.citypulse.main
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -24,8 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
+import com.andreeailie.citypulse.R
 import com.andreeailie.citypulse.bottomnavigation.BottomNavigation
-import com.andreeailie.citypulse.bottomnavigation.NavigationGraph
+import com.andreeailie.citypulse.navigation.NavigationGraph
 import com.andreeailie.citypulse.events.Event
 import com.andreeailie.citypulse.events.EventViewModel
 import com.andreeailie.citypulse.ui.theme.CityPulseTheme
