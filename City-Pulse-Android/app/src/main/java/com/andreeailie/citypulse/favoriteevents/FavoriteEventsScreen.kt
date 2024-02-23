@@ -1,5 +1,6 @@
 package com.andreeailie.citypulse.favoriteevents
 
+import android.util.Log
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,9 +36,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.andreeailie.citypulse.R
-import com.andreeailie.citypulse.events.Event
+import com.andreeailie.citypulse.events.PredefinedEvent
 import com.andreeailie.citypulse.events.EventCellFavorite
+import com.andreeailie.citypulse.events.EventCellPrivate
 import com.andreeailie.citypulse.events.EventViewModel
+import com.andreeailie.citypulse.events.PrivateEvent
 import kotlin.coroutines.cancellation.CancellationException
 
 @Composable
@@ -46,15 +49,21 @@ fun FavoriteEventsScreen(
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
+    Log.i("FavoriteEventsScreen", "favEventsList on top: ${eventViewModel.favoriteList}")
+    Log.i("FavoriteEventsScreen", "privateEventsList on top: ${eventViewModel.events.value}")
+
     Column(
         modifier = modifier
     ) {
         SetScreenTitle(modifier = modifier)
-        EventsList(
-            favoriteList = eventViewModel.favoriteList,
-            modifier = modifier,
-            navController = navController
-        )
+        eventViewModel.events.value?.let {
+            EventsList(
+                favoriteList = eventViewModel.favoriteList,
+                privateEventsList = it,
+                modifier = modifier,
+                navController = navController
+            )
+        }
     }
 }
 
@@ -84,28 +93,38 @@ fun SetScreenTitle(modifier: Modifier = Modifier) {
 
 @Composable
 private fun EventsList(
-    favoriteList: SnapshotStateMap<Event, Boolean>,
+    favoriteList: SnapshotStateMap<PredefinedEvent, Boolean>,
+    privateEventsList: List<PrivateEvent>,
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
+    Log.i("FavoriteEventsScreen", "privateEventsList: $privateEventsList")
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = modifier
         ) {
-            items(Event.entries.toTypedArray()) { event ->
+            items(PredefinedEvent.entries.toTypedArray()) { event ->
                 if (favoriteList[event] == true) {
                     EventCellFavorite(
                         modifier = modifier,
                         event = event,
                         onClickEvent = {},
-                        onClickEditEvent = {},
                     )
                 }
+            }
+            items(privateEventsList) { event ->
+                EventCellPrivate(
+                    modifier = modifier,
+                    event = event,
+                    onClickEvent = {},
+                    onClickEditEvent = {}
+                )
             }
             item {
                 Spacer(modifier = Modifier.height(150.dp))
             }
         }
+
         AddButton(
             modifier = Modifier
                 .align(BottomEnd)
@@ -114,7 +133,6 @@ private fun EventsList(
         )
     }
 }
-
 
 @Composable
 private fun AddButton(

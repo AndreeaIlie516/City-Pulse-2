@@ -30,7 +30,7 @@ fun BottomNavigation(navController: NavController) {
 
     BottomNavigation(
         modifier = Modifier
-            .height(60.dp),
+            .height(70.dp),
         backgroundColor = colorResource(id = R.color.white),
         contentColor = colorResource(id = R.color.grey)
     ) {
@@ -57,12 +57,11 @@ fun BottomNavigation(navController: NavController) {
                 selectedContentColor = colorResource(id = R.color.purple),
                 unselectedContentColor = colorResource(id = R.color.grey).copy(0.4f),
                 alwaysShowLabel = true,
-                selected = currentRoute == item.screen_route,
+                selected = currentRoute == item.screenRoute,
                 onClick = {
-                    navController.navigate(item.screen_route) {
-
-                        navController.graph.startDestinationRoute?.let { screen_route ->
-                            popUpTo(screen_route) {
+                    navController.navigate(item.screenRoute) {
+                        navController.graph.startDestinationRoute?.let { screenRoute ->
+                            popUpTo(screenRoute) {
                                 saveState = true
                             }
                         }

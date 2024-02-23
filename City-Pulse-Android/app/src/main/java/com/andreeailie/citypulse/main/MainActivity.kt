@@ -12,8 +12,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -27,7 +25,6 @@ import androidx.navigation.compose.rememberNavController
 import com.andreeailie.citypulse.R
 import com.andreeailie.citypulse.bottomnavigation.BottomNavigation
 import com.andreeailie.citypulse.navigation.NavigationGraph
-import com.andreeailie.citypulse.events.Event
 import com.andreeailie.citypulse.events.EventViewModel
 import com.andreeailie.citypulse.ui.theme.CityPulseTheme
 import kotlinx.coroutines.launch
@@ -63,6 +60,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 @Composable
 fun SetTitle(modifier: Modifier = Modifier) {
     Row(
@@ -87,11 +85,6 @@ fun SetTitle(modifier: Modifier = Modifier) {
 @Composable
 fun MainScreenView(eventViewModel: EventViewModel) {
     val navController = rememberNavController()
-    val favoriteList = remember { mutableStateMapOf<Event, Boolean>() }
-
-    Event.entries.forEach { event ->
-        favoriteList[event] = false
-    }
 
     Scaffold(
         bottomBar = { BottomNavigation(navController = navController) }
@@ -100,3 +93,4 @@ fun MainScreenView(eventViewModel: EventViewModel) {
         NavigationGraph(navController = navController, eventViewModel)
     }
 }
+

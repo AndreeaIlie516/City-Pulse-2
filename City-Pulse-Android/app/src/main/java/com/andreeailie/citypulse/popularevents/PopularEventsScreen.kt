@@ -12,8 +12,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +23,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.andreeailie.citypulse.R
-import com.andreeailie.citypulse.events.Event
+import com.andreeailie.citypulse.events.PredefinedEvent
 import com.andreeailie.citypulse.events.EventCellMain
 import com.andreeailie.citypulse.events.EventViewModel
 
@@ -34,12 +32,6 @@ fun PopularEventsScreen(
     eventViewModel: EventViewModel,
     modifier: Modifier = Modifier
 ) {
-    val favoriteList = remember { mutableStateMapOf<Event, Boolean>() }
-
-    Event.entries.forEach { event ->
-        favoriteList[event] = false
-    }
-
     Column(
         modifier = modifier
     ) {
@@ -62,7 +54,7 @@ fun SetScreenTitle(modifier: Modifier = Modifier) {
         )
         {
             Text(
-                text = stringResource(id = R.string.popular_events),
+                text = stringResource(id = R.string.popular_events_screen),
                 textAlign = TextAlign.Left,
                 color = colorResource(R.color.black),
                 style = MaterialTheme.typography.headlineMedium,
@@ -84,13 +76,13 @@ fun SetScreenTitle(modifier: Modifier = Modifier) {
 
 @Composable
 private fun EventsList(
-    favoriteList: SnapshotStateMap<Event, Boolean>,
+    favoriteList: SnapshotStateMap<PredefinedEvent, Boolean>,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
         modifier = modifier
     ) {
-        items(Event.entries.toTypedArray()) { event ->
+        items(PredefinedEvent.entries.toTypedArray()) { event ->
             favoriteList[event]?.let {
                 EventCellMain(
                     modifier = modifier,
