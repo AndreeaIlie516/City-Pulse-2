@@ -194,7 +194,6 @@ fun EventCellFavorite(
         }
     }
 }
-
 @Composable
 fun EventCellPrivate(
     modifier: Modifier = Modifier,
@@ -219,8 +218,7 @@ fun EventCellPrivate(
                 onClickEvent()
             },
         verticalAlignment = Alignment.Top,
-
-        ) {
+    ) {
         AsyncImage(
             modifier = Modifier
                 .padding(start = 10.dp, top = 10.dp, bottom = 10.dp, end = 10.dp)
@@ -241,7 +239,6 @@ fun EventCellPrivate(
         Column(
             modifier = Modifier
                 .padding(top = 10.dp, bottom = 10.dp, start = 10.dp)
-
         )
         {
             Text(
@@ -251,7 +248,6 @@ fun EventCellPrivate(
                 style = MaterialTheme.typography.bodyLarge,
                 fontFamily = FontFamily(Font(R.font.sf_pro_display_bold))
             )
-
             Text(
                 text = event.band,
                 textAlign = TextAlign.Left,
@@ -259,7 +255,6 @@ fun EventCellPrivate(
                 style = MaterialTheme.typography.bodyLarge,
                 fontFamily = FontFamily(Font(R.font.sf_pro_display_bold))
             )
-
             Text(
                 text = event.location,
                 textAlign = TextAlign.Left,
@@ -268,5 +263,20 @@ fun EventCellPrivate(
                 fontFamily = FontFamily(Font(R.font.sf_pro_display_bold))
             )
         }
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 15.dp, top = 15.dp)
+                .size(30.dp)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = { onClickEditEvent() }
+                ),
+
+            alignment = Alignment.CenterEnd,
+            painter = painterResource(id = R.drawable.edit_icon),
+            contentDescription = stringResource(id = R.string.edit_icon_description),
+        )
     }
 }

@@ -8,8 +8,9 @@ import com.andreeailie.citypulse.bottomnavigation.BottomNavItem
 import com.andreeailie.citypulse.events.EventViewModel
 import com.andreeailie.citypulse.favoriteevents.FavoriteEventsScreen
 import com.andreeailie.citypulse.popularevents.PopularEventsScreen
-import com.andreeailie.citypulse.privateevent.AddPrivateEventScreen
+import com.andreeailie.citypulse.addprivateevent.AddPrivateEventScreen
 import com.andreeailie.citypulse.profile.ProfileScreen
+import com.andreeailie.citypulse.updateprivateevent.UpdatePrivateEventScreen
 
 @Composable
 fun NavigationGraph(
@@ -28,6 +29,9 @@ fun NavigationGraph(
         }
         composable(NavItem.Add.screenRoute) {
             AddPrivateEventScreen(navController = navController, eventViewModel = eventViewModel)
+        }
+        composable(NavItem.Update.screenRoute) {
+            UpdatePrivateEventScreen(navController = navController, eventViewModel = eventViewModel)
         }
     }
 }
