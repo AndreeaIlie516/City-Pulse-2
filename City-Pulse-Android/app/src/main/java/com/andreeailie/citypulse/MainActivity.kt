@@ -27,11 +27,13 @@ import androidx.navigation.compose.rememberNavController
 import com.andreeailie.citypulse.bottomnavigation.BottomNavigation
 import com.andreeailie.citypulse.bottomnavigation.NavigationGraph
 import com.andreeailie.citypulse.events.Event
+import com.andreeailie.citypulse.events.EventViewModel
 import com.andreeailie.citypulse.ui.theme.CityPulseTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
+    private val eventViewModel: EventViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +57,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             CityPulseTheme {
-                MainScreenView()
+                MainScreenView(eventViewModel)
             }
         }
     }
@@ -82,7 +84,7 @@ fun SetTitle(modifier: Modifier = Modifier) {
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreenView() {
+fun MainScreenView(eventViewModel: EventViewModel) {
     val navController = rememberNavController()
     val favoriteList = remember { mutableStateMapOf<Event, Boolean>() }
 
@@ -94,6 +96,6 @@ fun MainScreenView() {
         bottomBar = { BottomNavigation(navController = navController) }
     ) {
         SetTitle()
-        NavigationGraph(navController = navController)
+        NavigationGraph(navController = navController, eventViewModel)
     }
 }

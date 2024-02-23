@@ -1,6 +1,5 @@
 package com.andreeailie.citypulse.favoriteevents
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,8 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,27 +17,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreeailie.citypulse.R
-import com.andreeailie.citypulse.SetTitle
 import com.andreeailie.citypulse.events.Event
-import com.andreeailie.citypulse.events.EventCell
+import com.andreeailie.citypulse.events.EventCellFavorite
+import com.andreeailie.citypulse.events.EventViewModel
 
-
-@Preview
 @Composable
 fun FavoriteEventsScreen(
+    eventViewModel: EventViewModel,
     modifier: Modifier = Modifier
 ) {
-    val favoriteList = remember { mutableStateMapOf<Event, Boolean>() }
-
     Column(
         modifier = modifier
     ) {
-        SetTitle(modifier = modifier)
         SetScreenTitle(modifier = modifier)
-        EventsList(favoriteList = favoriteList, modifier = modifier)
+        EventsList(favoriteList = eventViewModel.favoriteList, modifier = modifier)
     }
 }
 
@@ -48,7 +40,7 @@ fun FavoriteEventsScreen(
 fun SetScreenTitle(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
-            .padding(start = 25.dp, top = 10.dp, bottom = 20.dp)
+            .padding(start = 25.dp, top = 65.dp, bottom = 20.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -76,17 +68,13 @@ private fun EventsList(
     LazyColumn(
         modifier = modifier
     ) {
-        items(Event.values()) { event ->
+        items(Event.entries.toTypedArray()) { event ->
             if (favoriteList[event] == true) {
-                EventCell(
+                EventCellFavorite(
                     modifier = modifier,
                     event = event,
                     onClickEvent = {},
-                    onClickFavoriteEvent = {
-                        favoriteList[event] = !favoriteList[event]!!
-                        Log.i("PopularEventsScreen", "Favorites: $favoriteList")
-                    },
-                    isFavorite = favoriteList[event] ?: false
+                    onClickEditEvent = {}
                 )
             }
         }

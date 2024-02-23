@@ -23,30 +23,28 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andreeailie.citypulse.R
-import com.andreeailie.citypulse.SetTitle
 import com.andreeailie.citypulse.events.Event
-import com.andreeailie.citypulse.events.EventCell
+import com.andreeailie.citypulse.events.EventCellMain
+import com.andreeailie.citypulse.events.EventViewModel
 
-@Preview
 @Composable
 fun PopularEventsScreen(
+    eventViewModel: EventViewModel,
     modifier: Modifier = Modifier
 ) {
     val favoriteList = remember { mutableStateMapOf<Event, Boolean>() }
 
-    Event.values().forEach { event ->
+    Event.entries.forEach { event ->
         favoriteList[event] = false
     }
 
     Column(
         modifier = modifier
     ) {
-        SetTitle(modifier = modifier)
         SetScreenTitle(modifier = modifier)
-        EventsList(favoriteList = favoriteList, modifier = modifier)
+        EventsList(favoriteList = eventViewModel.favoriteList, modifier = modifier)
     }
 }
 
@@ -54,7 +52,7 @@ fun PopularEventsScreen(
 fun SetScreenTitle(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
-            .padding(start = 25.dp, top = 10.dp, bottom = 20.dp)
+            .padding(start = 25.dp, top = 65.dp, bottom = 20.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -92,9 +90,9 @@ private fun EventsList(
     LazyColumn(
         modifier = modifier
     ) {
-        items(Event.values()) { event ->
+        items(Event.entries.toTypedArray()) { event ->
             favoriteList[event]?.let {
-                EventCell(
+                EventCellMain(
                     modifier = modifier,
                     event = event,
                     onClickEvent = {},
