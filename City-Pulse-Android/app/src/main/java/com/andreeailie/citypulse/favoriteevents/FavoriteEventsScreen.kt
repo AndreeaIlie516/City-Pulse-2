@@ -1,12 +1,10 @@
-package com.andreeailie.citypulse
+package com.andreeailie.citypulse.favoriteevents
 
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -18,23 +16,24 @@ import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.andreeailie.citypulse.R
+import com.andreeailie.citypulse.SetTitle
+import com.andreeailie.citypulse.events.Event
+import com.andreeailie.citypulse.events.EventCell
+
+
 @Preview
 @Composable
-fun PopularEventsScreen(
+fun FavoriteEventsScreen(
     modifier: Modifier = Modifier
 ) {
     val favoriteList = remember { mutableStateMapOf<Event, Boolean>() }
-
-    Event.values().forEach { event ->
-        favoriteList[event] = false
-    }
 
     Column(
         modifier = modifier
@@ -44,28 +43,6 @@ fun PopularEventsScreen(
         EventsList(favoriteList = favoriteList, modifier = modifier)
     }
 }
-
-@Composable
-fun SetTitle(modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier.padding(start = 25.dp, top = 10.dp)
-    ) {
-        Column(
-            modifier = modifier
-        )
-        {
-            Text(
-                text = stringResource(R.string.app_name),
-                textAlign = TextAlign.Left,
-                color = colorResource(R.color.purple),
-                style = MaterialTheme.typography.displaySmall,
-                fontFamily = FontFamily(Font(R.font.sf_pro_display_bold))
-            )
-        }
-    }
-
-}
-
 
 @Composable
 fun SetScreenTitle(modifier: Modifier = Modifier) {
@@ -81,23 +58,13 @@ fun SetScreenTitle(modifier: Modifier = Modifier) {
         )
         {
             Text(
-                text = stringResource(id = R.string.popular_events),
+                text = stringResource(id = R.string.favorite_events_screen),
                 textAlign = TextAlign.Left,
                 color = colorResource(R.color.black),
                 style = MaterialTheme.typography.headlineMedium,
                 fontFamily = FontFamily(Font(R.font.sf_pro_display_bold))
             )
         }
-
-        Image(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(end = 30.dp, top = 8.dp)
-                .size(30.dp),
-            alignment = Alignment.CenterEnd,
-            painter = painterResource(id = R.drawable.filter_icon),
-            contentDescription = stringResource(id = R.string.filter_icon_description),
-        )
     }
 }
 
@@ -110,7 +77,7 @@ private fun EventsList(
         modifier = modifier
     ) {
         items(Event.values()) { event ->
-            favoriteList[event]?.let {
+            if (favoriteList[event] == true) {
                 EventCell(
                     modifier = modifier,
                     event = event,

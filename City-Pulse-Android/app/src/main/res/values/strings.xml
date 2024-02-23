@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">CityPulse</string>
 
+    <string name="popular_events_screen">Popular Events</string>
+    <string name="favorite_events_screen">Your Favorite Events</string>
+    <string name="profile_screen">Your Profile</string>
+
     <string name="first_event_time">27 Oct - 19:30</string>
     <string name="first_event_band">Coma + Om la Lună</string>
     <string name="first_event_location">Zazen Garden</string>
