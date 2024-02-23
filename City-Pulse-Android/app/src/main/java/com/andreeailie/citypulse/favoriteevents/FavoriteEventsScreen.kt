@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.andreeailie.citypulse.R
+import com.andreeailie.citypulse.events.DeleteItem
 import com.andreeailie.citypulse.events.PredefinedEvent
 import com.andreeailie.citypulse.events.EventCellFavorite
 import com.andreeailie.citypulse.events.EventCellPrivate
@@ -115,13 +116,14 @@ private fun EventsList(
                 }
             }
             items(privateEventsList) { event ->
-                EventCellPrivate(
-                    modifier = modifier,
-                    event = event,
+                DeleteItem(event = event,
                     onClickEvent = {},
                     onClickEditEvent = {
                         eventViewModel.privateEventToEdit = event
                         navController.navigate("update")
+                    },
+                    onDelete = {
+                        eventViewModel.deleteEvent(event)
                     }
                 )
             }

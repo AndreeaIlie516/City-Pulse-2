@@ -61,16 +61,6 @@ fun SetScreenTitle(modifier: Modifier = Modifier) {
                 fontFamily = FontFamily(Font(R.font.sf_pro_display_bold))
             )
         }
-
-        Image(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(end = 30.dp, top = 8.dp)
-                .size(30.dp),
-            alignment = Alignment.CenterEnd,
-            painter = painterResource(id = R.drawable.filter_icon),
-            contentDescription = stringResource(id = R.string.filter_icon_description),
-        )
     }
 }
 
