@@ -1,17 +1,20 @@
 package routes
 
 import (
+	"City-Pulse-API/domain/entities"
+	"City-Pulse-API/infrastructure/middlewares"
 	"City-Pulse-API/presentation/handlers"
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterUserRoutes(router *gin.Engine, userHandler *handlers.UserHandler) {
+func RegisterUserRoutes(router *gin.Engine, userHandler *handlers.UserHandler, roleMiddleware middlewares.IAuthMiddleware) {
 	userGroup := router.Group("/users")
 	{
-		userGroup.GET("/", userHandler.AllUsers)
-		userGroup.GET("/:id", userHandler.UserByID)
-		userGroup.POST("/", userHandler.CreateUser)
-		userGroup.PUT("/:id", userHandler.UpdateUser)
-		userGroup.DELETE("/:id", userHandler.DeleteUser)
+		userGroup.GET("/", roleMiddleware.RequireRole(entities.Admin), userHandler.AllUsers)
+		userGroup.GET("/:id", roleMiddleware.RequireRole(entities.NormalUser), userHandler.UserByID)
+		userGroup.POST("/register", userHandler.Register)
+		userGroup.POST("/login", userHandler.Login)
+		userGroup.PUT("/:id", roleMiddleware.RequireRole(entities.NormalUser), userHandler.UpdateUser)
+		userGroup.DELETE("/:id", roleMiddleware.RequireRole(entities.NormalUser), userHandler.DeleteUser)
 	}
 }

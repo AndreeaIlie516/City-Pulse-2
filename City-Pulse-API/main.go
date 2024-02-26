@@ -5,6 +5,7 @@ import (
 	"City-Pulse-API/domain/entities"
 	"City-Pulse-API/domain/services"
 	"City-Pulse-API/infrastructure/dataaccess"
+	"City-Pulse-API/infrastructure/middlewares"
 	"City-Pulse-API/presentation/handlers"
 	"City-Pulse-API/routes"
 	"github.com/gin-gonic/gin"
@@ -38,6 +39,8 @@ func main() {
 			log.Fatalf("Failed to migrate database: %v", err)
 		}
 	}
+
+	authMiddleware := middlewares.AuthMiddleware{}
 
 	artistRepository := dataaccess.NewGormArtistRepository(db)
 	artistGenreRepository := dataaccess.NewGormArtistGenreRepository(db)
@@ -73,7 +76,7 @@ func main() {
 	routes.RegisterEventArtistRoutes(router, &eventArtistHandler)
 	routes.RegisterGenreRoutes(router, &genreHandler)
 	routes.RegisterLocationRoutes(router, &locationHandler)
-	routes.RegisterUserRoutes(router, &userHandler)
+	routes.RegisterUserRoutes(router, &userHandler, authMiddleware)
 
 	err := router.Run("localhost:8080")
 	if err != nil {
