@@ -3,6 +3,7 @@ package handlers
 import (
 	"City-Pulse-API/domain/entities"
 	"City-Pulse-API/domain/services"
+	"City-Pulse-API/utils"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -45,6 +46,18 @@ func (handler *ArtistHandler) CreateArtist(c *gin.Context) {
 	}
 
 	validate := validator.New()
+
+	validators := map[string]validator.Func{
+		"nameValidator": utils.NameValidator,
+		"bandValidator": utils.BandValidator,
+	}
+
+	for validatorName, validatorFunction := range validators {
+		if err := validate.RegisterValidation(validatorName, validatorFunction); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to register validator: " + validatorName})
+			return
+		}
+	}
 
 	err := validate.Struct(newArtist)
 
@@ -106,6 +119,18 @@ func (handler *ArtistHandler) UpdateArtist(c *gin.Context) {
 	}
 
 	validate := validator.New()
+
+	validators := map[string]validator.Func{
+		"nameValidator": utils.NameValidator,
+		"bandValidator": utils.BandValidator,
+	}
+
+	for validatorName, validatorFunction := range validators {
+		if err := validate.RegisterValidation(validatorName, validatorFunction); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to register validator: " + validatorName})
+			return
+		}
+	}
 
 	err := validate.Struct(updatedArtist)
 
