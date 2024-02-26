@@ -22,6 +22,7 @@ func main() {
 	db := database.ConnectDB()
 
 	entitiesToMigrate := []interface{}{
+		&entities.Genre{},
 		&entities.User{},
 	}
 
@@ -32,12 +33,16 @@ func main() {
 		}
 	}
 
+	genreRepository := dataaccess.NewGormGenreRepository(db)
 	userRepository := dataaccess.NewGormUserRepository(db)
 
+	genreService := services.GenreService{Repo: genreRepository}
 	userService := services.UserService{Repo: userRepository}
 
+	genreHandler := handlers.GenreHandler{Service: &genreService}
 	userHandler := handlers.UserHandler{Service: &userService}
 
+	routes.RegisterGenreRoutes(router, &genreHandler)
 	routes.RegisterUserRoutes(router, &userHandler)
 
 	err := router.Run("localhost:8080")
