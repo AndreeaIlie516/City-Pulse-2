@@ -22,6 +22,7 @@ func main() {
 	db := database.ConnectDB()
 
 	entitiesToMigrate := []interface{}{
+		&entities.Artist{},
 		&entities.Genre{},
 		&entities.User{},
 	}
@@ -33,15 +34,19 @@ func main() {
 		}
 	}
 
+	artistRepository := dataaccess.NewGormArtistRepository(db)
 	genreRepository := dataaccess.NewGormGenreRepository(db)
 	userRepository := dataaccess.NewGormUserRepository(db)
 
+	artistService := services.ArtistService{Repo: artistRepository}
 	genreService := services.GenreService{Repo: genreRepository}
 	userService := services.UserService{Repo: userRepository}
 
+	artistHandler := handlers.ArtistHandler{Service: &artistService}
 	genreHandler := handlers.GenreHandler{Service: &genreService}
 	userHandler := handlers.UserHandler{Service: &userService}
 
+	routes.RegisterArtistRoutes(router, &artistHandler)
 	routes.RegisterGenreRoutes(router, &genreHandler)
 	routes.RegisterUserRoutes(router, &userHandler)
 
