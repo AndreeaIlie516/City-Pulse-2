@@ -8,9 +8,10 @@ import (
 )
 
 type EventService struct {
-	Repo         repositories.EventRepository
-	LocationRepo repositories.LocationRepository
-	CityRepo     repositories.CityRepository
+	Repo            repositories.EventRepository
+	LocationRepo    repositories.LocationRepository
+	CityRepo        repositories.CityRepository
+	EventArtistRepo repositories.EventArtistRepository
 }
 
 type EventDetails struct {
@@ -75,6 +76,10 @@ func (service *EventService) DeleteEvent(idStr string) (entities.Event, error) {
 		return entities.Event{}, errors.New("invalid ID format")
 	}
 
+	_, err := service.EventArtistRepo.DeleteEventFromItsArtists(id)
+	if err != nil {
+		return entities.Event{}, err
+	}
 	event, err := service.Repo.DeleteEvent(id)
 	if err != nil {
 		return entities.Event{}, err

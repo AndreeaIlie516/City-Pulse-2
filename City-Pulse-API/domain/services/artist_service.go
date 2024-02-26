@@ -10,6 +10,7 @@ import (
 type ArtistService struct {
 	Repo            repositories.ArtistRepository
 	ArtistGenreRepo repositories.ArtistGenreRepository
+	EventArtistRepo repositories.EventArtistRepository
 }
 
 func (service *ArtistService) AllArtists() ([]entities.Artist, error) {
@@ -48,6 +49,11 @@ func (service *ArtistService) DeleteArtist(idStr string) (entities.Artist, error
 	}
 
 	_, err := service.ArtistGenreRepo.DeleteArtistFromItsGenres(id)
+	if err != nil {
+		return entities.Artist{}, err
+	}
+
+	_, err = service.EventArtistRepo.DeleteArtistFromItsEvents(id)
 	if err != nil {
 		return entities.Artist{}, err
 	}

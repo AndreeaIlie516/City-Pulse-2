@@ -26,6 +26,7 @@ func main() {
 		&entities.ArtistGenre{},
 		&entities.City{},
 		&entities.Event{},
+		&entities.EventArtist{},
 		&entities.Genre{},
 		&entities.Location{},
 		&entities.User{},
@@ -42,6 +43,7 @@ func main() {
 	artistGenreRepository := dataaccess.NewGormArtistGenreRepository(db)
 	cityRepository := dataaccess.NewGormCityRepository(db)
 	eventRepository := dataaccess.NewGormEventRepository(db)
+	eventArtistRepository := dataaccess.NewGormEventArtistRepository(db)
 	genreRepository := dataaccess.NewGormGenreRepository(db)
 	locationRepository := dataaccess.NewGormLocationRepository(db)
 	userRepository := dataaccess.NewGormUserRepository(db)
@@ -50,6 +52,7 @@ func main() {
 	artistGenreService := services.ArtistGenreService{Repo: artistGenreRepository, ArtistRepo: artistRepository, GenreRepo: genreRepository}
 	cityService := services.CityService{Repo: cityRepository, LocationRepo: locationRepository}
 	eventService := services.EventService{Repo: eventRepository, LocationRepo: locationRepository, CityRepo: cityRepository}
+	eventArtistService := services.EventArtistService{Repo: eventArtistRepository, EventRepo: eventRepository, ArtistRepo: artistRepository, LocationRepo: locationRepository, CityRepo: cityRepository}
 	genreService := services.GenreService{Repo: genreRepository}
 	locationService := services.LocationService{Repo: locationRepository, CityRepo: cityRepository}
 	userService := services.UserService{Repo: userRepository}
@@ -58,6 +61,7 @@ func main() {
 	artistGenreHandler := handlers.ArtistGenreHandler{Service: &artistGenreService}
 	cityHandler := handlers.CityHandler{Service: &cityService}
 	eventHandler := handlers.EventHandler{Service: &eventService}
+	eventArtistHandler := handlers.EventArtistHandler{Service: &eventArtistService}
 	genreHandler := handlers.GenreHandler{Service: &genreService}
 	locationHandler := handlers.LocationHandler{Service: &locationService}
 	userHandler := handlers.UserHandler{Service: &userService}
@@ -66,6 +70,7 @@ func main() {
 	routes.RegisterArtistGenreRoutes(router, &artistGenreHandler)
 	routes.RegisterCityRoutes(router, &cityHandler)
 	routes.RegisterEventRoutes(router, &eventHandler)
+	routes.RegisterEventArtistRoutes(router, &eventArtistHandler)
 	routes.RegisterGenreRoutes(router, &genreHandler)
 	routes.RegisterLocationRoutes(router, &locationHandler)
 	routes.RegisterUserRoutes(router, &userHandler)
