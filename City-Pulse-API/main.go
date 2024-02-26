@@ -23,6 +23,7 @@ func main() {
 
 	entitiesToMigrate := []interface{}{
 		&entities.Artist{},
+		&entities.City{},
 		&entities.Genre{},
 		&entities.User{},
 	}
@@ -35,18 +36,22 @@ func main() {
 	}
 
 	artistRepository := dataaccess.NewGormArtistRepository(db)
+	cityRepository := dataaccess.NewGormCityRepository(db)
 	genreRepository := dataaccess.NewGormGenreRepository(db)
 	userRepository := dataaccess.NewGormUserRepository(db)
 
 	artistService := services.ArtistService{Repo: artistRepository}
+	cityService := services.CityService{Repo: cityRepository}
 	genreService := services.GenreService{Repo: genreRepository}
 	userService := services.UserService{Repo: userRepository}
 
 	artistHandler := handlers.ArtistHandler{Service: &artistService}
+	cityHandler := handlers.CityHandler{Service: &cityService}
 	genreHandler := handlers.GenreHandler{Service: &genreService}
 	userHandler := handlers.UserHandler{Service: &userService}
 
 	routes.RegisterArtistRoutes(router, &artistHandler)
+	routes.RegisterCityRoutes(router, &cityHandler)
 	routes.RegisterGenreRoutes(router, &genreHandler)
 	routes.RegisterUserRoutes(router, &userHandler)
 
