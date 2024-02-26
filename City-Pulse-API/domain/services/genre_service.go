@@ -8,7 +8,8 @@ import (
 )
 
 type GenreService struct {
-	Repo repositories.GenreRepository
+	Repo            repositories.GenreRepository
+	ArtistGenreRepo repositories.ArtistGenreRepository
 }
 
 func (service *GenreService) AllGenres() ([]entities.Genre, error) {
@@ -44,6 +45,11 @@ func (service *GenreService) DeleteGenre(idStr string) (entities.Genre, error) {
 	var id uint
 	if _, err := fmt.Sscanf(idStr, "%d", &id); err != nil {
 		return entities.Genre{}, errors.New("invalid ID format")
+	}
+
+	_, err := service.ArtistGenreRepo.DeleteGenreFromItsArtists(id)
+	if err != nil {
+		return entities.Genre{}, err
 	}
 
 	genre, err := service.Repo.DeleteGenre(id)
