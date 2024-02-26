@@ -25,6 +25,7 @@ func main() {
 		&entities.Artist{},
 		&entities.City{},
 		&entities.Genre{},
+		&entities.Location{},
 		&entities.User{},
 	}
 
@@ -38,21 +39,25 @@ func main() {
 	artistRepository := dataaccess.NewGormArtistRepository(db)
 	cityRepository := dataaccess.NewGormCityRepository(db)
 	genreRepository := dataaccess.NewGormGenreRepository(db)
+	locationRepository := dataaccess.NewGormLocationRepository(db)
 	userRepository := dataaccess.NewGormUserRepository(db)
 
 	artistService := services.ArtistService{Repo: artistRepository}
-	cityService := services.CityService{Repo: cityRepository}
+	cityService := services.CityService{Repo: cityRepository, LocationRepo: locationRepository}
 	genreService := services.GenreService{Repo: genreRepository}
+	locationService := services.LocationService{Repo: locationRepository, CityRepo: cityRepository}
 	userService := services.UserService{Repo: userRepository}
 
 	artistHandler := handlers.ArtistHandler{Service: &artistService}
 	cityHandler := handlers.CityHandler{Service: &cityService}
 	genreHandler := handlers.GenreHandler{Service: &genreService}
+	locationHandler := handlers.LocationHandler{Service: &locationService}
 	userHandler := handlers.UserHandler{Service: &userService}
 
 	routes.RegisterArtistRoutes(router, &artistHandler)
 	routes.RegisterCityRoutes(router, &cityHandler)
 	routes.RegisterGenreRoutes(router, &genreHandler)
+	routes.RegisterLocationRoutes(router, &locationHandler)
 	routes.RegisterUserRoutes(router, &userHandler)
 
 	err := router.Run("localhost:8080")
