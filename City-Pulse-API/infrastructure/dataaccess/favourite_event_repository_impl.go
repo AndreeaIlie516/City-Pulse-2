@@ -10,11 +10,6 @@ type GormFavouriteEventRepository struct {
 	Db *gorm.DB
 }
 
-func (r *GormFavouriteEventRepository) AllFavouriteEventAssociationsIDs() ([]uint, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
 func NewGormFavouriteEventRepository(db *gorm.DB) *GormFavouriteEventRepository {
 	return &GormFavouriteEventRepository{Db: db}
 }

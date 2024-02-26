@@ -4,7 +4,7 @@ import "City-Pulse-API/domain/entities"
 
 type FavouriteEventRepository interface {
 	AllFavouriteEventAssociations() ([]entities.FavouriteEvent, error)
-	AllFavouriteEventAssociationsIDs() ([]uint, error)
+	AllFavouriteEventAssociationIDs() ([]uint, error)
 	FavouriteEventAssociationByID(id uint) (*entities.FavouriteEvent, error)
 	FavouriteEventAssociation(eventID uint, userID uint) (*entities.FavouriteEvent, error)
 	UserIDsForEvent(eventID uint) ([]uint, error)
