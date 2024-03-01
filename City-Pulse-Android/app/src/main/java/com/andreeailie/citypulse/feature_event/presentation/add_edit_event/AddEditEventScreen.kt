@@ -18,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Alignment.Companion.Center
@@ -77,9 +76,13 @@ fun AddEditEventScreen(
 
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val scope = rememberCoroutineScope()
-
     val eventId = viewModel.currentEventId
+
+    val screenScope = if (eventId == null) {
+        "add"
+    } else {
+        "update"
+    }
 
     val titleTextId = if (eventId == null) {
         R.string.add_private_event_screen
@@ -100,8 +103,10 @@ fun AddEditEventScreen(
                         message = event.message
                     )
                 }
-
-                is AddEditEventViewModel.UiEvent.SaveEvent -> {
+                is AddEditEventViewModel.UiEvent.SaveNewEvent -> {
+                    navController.navigateUp()
+                }
+                is AddEditEventViewModel.UiEvent.SaveUpdatedEvent -> {
                     navController.navigateUp()
                 }
             }
@@ -185,7 +190,11 @@ fun AddEditEventScreen(
                         containerColor = colorResource(id = R.color.purple)
                     ),
                     onClick = {
-                        viewModel.onEvent(AddEditEventEvent.SaveEvent)
+                        if (screenScope == "add") {
+                            viewModel.onEvent(AddEditEventEvent.SaveNewEvent)
+                        } else {
+                            viewModel.onEvent(AddEditEventEvent.SaveUpdatedEvent)
+                        }
                     }
                 ) {
                     Text(

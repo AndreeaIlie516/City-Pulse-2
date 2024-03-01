@@ -74,6 +74,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
     implementation("com.google.dagger:hilt-android:2.49")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation("com.google.code.gson:gson:2.10")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     kapt("com.google.dagger:hilt-android-compiler:2.49")
     kapt("androidx.hilt:hilt-compiler:1.2.0")
@@ -81,6 +85,8 @@ dependencies {
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+
 
     implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("androidx.annotation:annotation:1.7.1")
@@ -101,4 +107,5 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2023.06.00"))
 
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.06.00"))
+
 }

@@ -59,17 +59,18 @@ constructor(
     val eventFlow = _eventFlow.asSharedFlow()
 
     var currentEventId: Int? = null
+    private var currentEventIdLocal: Int? = null
 
     init {
-        Log.i("AddEditEventViewModel", "intra")
-        Log.i("AddEditEventViewModel", "id: ${savedStateHandle.get<Int>("eventId")}")
         savedStateHandle.get<Int>("eventId")?.let { eventId ->
 
             if (eventId != -1) {
                 Log.i("AddEditEventViewModel", "eventId: $eventId")
                 viewModelScope.launch {
-                    eventUseCases.getEventByIDUseCase(eventId)?.also { event ->
-                        currentEventId = event.id
+
+                    eventUseCases.getEventByIDUseCase(eventId, local = true)?.also { event ->
+                        currentEventId = event.ID
+                        currentEventIdLocal = event.idLocal
                         _eventTime.value = eventTime.value.copy(
                             text = event.time,
                             isHintVisible = false
@@ -83,7 +84,7 @@ constructor(
                             isHintVisible = false
                         )
                         _eventImagePath.value = eventImagePath.value.copy(
-                            text = event.imagePath,
+                            text = event.image_url,
                             isHintVisible = false
                         )
                     }
@@ -94,6 +95,7 @@ constructor(
     }
 
     fun onEvent(event: AddEditEventEvent) {
+        Log.i("AddEditEventViwModel", "on event: $event")
         when (event) {
             is AddEditEventEvent.EnteredTime -> {
                 _eventTime.value = eventTime.value.copy(
@@ -148,32 +150,37 @@ constructor(
                 )
             }
 
-            is AddEditEventEvent.SaveEvent -> {
+            is AddEditEventEvent.SaveNewEvent -> {
+                Log.i("AddEditEventViewModel", "Save new event current event id: $currentEventId")
                 viewModelScope.launch {
                     try {
                         val event = if (currentEventId != null) {
                             Event(
-                                id = currentEventId!!,
+                                idLocal = currentEventIdLocal!!,
+                                ID = currentEventId!!,
                                 time = eventTime.value.text,
                                 band = eventBand.value.text,
                                 location = eventLocation.value.text,
-                                imagePath = eventImagePath.value.text,
-                                isFavourite = false,
-                                isPrivate = true
+                                image_url = eventImagePath.value.text,
+                                is_favourite = false,
+                                is_private = true,
+                                action = null
                             )
                         } else {
                             Event(
-                                id = 0,
+                                idLocal = 0,
+                                ID = 0,
                                 time = eventTime.value.text,
                                 band = eventBand.value.text,
                                 location = eventLocation.value.text,
-                                imagePath = eventImagePath.value.text,
-                                isFavourite = false,
-                                isPrivate = true
+                                image_url = eventImagePath.value.text,
+                                is_favourite = false,
+                                is_private = true,
+                                action = null
                             )
                         }
                         eventUseCases.addEventUseCase(event)
-                        _eventFlow.emit(UiEvent.SaveEvent)
+                        _eventFlow.emit(UiEvent.SaveNewEvent)
                     } catch (e: InvalidEventException) {
                         _eventFlow.emit(
                             UiEvent.ShowSnackbar(
@@ -182,13 +189,56 @@ constructor(
                         )
                     }
                 }
+            }
 
+            is AddEditEventEvent.SaveUpdatedEvent -> {
+                Log.i("AddEditEventViewModel", "Save updated event current event id: $currentEventId")
+                Log.i("AddEditEventViewModel", "Save updated event current event id local: $currentEventIdLocal")
+
+                viewModelScope.launch {
+                    try {
+                        val event = if (currentEventId != null) {
+                            Event(
+                                idLocal = currentEventIdLocal!!,
+                                ID = currentEventId!!,
+                                time = eventTime.value.text,
+                                band = eventBand.value.text,
+                                location = eventLocation.value.text,
+                                image_url = eventImagePath.value.text,
+                                is_favourite = false,
+                                is_private = true,
+                                action = null
+                            )
+                        } else {
+                            Event(
+                                idLocal = 0,
+                                ID = 0,
+                                time = eventTime.value.text,
+                                band = eventBand.value.text,
+                                location = eventLocation.value.text,
+                                image_url = eventImagePath.value.text,
+                                is_favourite = false,
+                                is_private = true,
+                                action = null
+                            )
+                        }
+                        eventUseCases.updateEventUseCase(event)
+                        _eventFlow.emit(UiEvent.SaveUpdatedEvent)
+                    } catch (e: InvalidEventException) {
+                        _eventFlow.emit(
+                            UiEvent.ShowSnackbar(
+                                message = e.message ?: "Couldn't save event"
+                            )
+                        )
+                    }
+                }
             }
         }
     }
 
     sealed class UiEvent {
         data class ShowSnackbar(val message: String) : UiEvent()
-        object SaveEvent : UiEvent()
+        data object SaveNewEvent : UiEvent()
+        data object SaveUpdatedEvent : UiEvent()
     }
 }

@@ -1,4 +1,4 @@
-package com.andreeailie.citypulse.feature_event.data.data_source
+package com.andreeailie.citypulse.feature_event.data.data_source.local
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -14,7 +14,7 @@ interface EventDao {
     @Query("SELECT * FROM event")
     fun getEvents(): Flow<List<Event>>
 
-    @Query("SELECT * FROM event WHERE id = :id")
+    @Query("SELECT * FROM event WHERE ID = :id")
     suspend fun getEventById(id: Int): Event?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -22,4 +22,12 @@ interface EventDao {
 
     @Delete
     suspend fun deleteEvent(event: Event)
+
+    @Query("Delete FROM event")
+    suspend fun deleteAll()
+
+    @Query("SELECT * FROM event WHERE action IS NOT NULL")
+    fun getEventsWithPendingActions(): List<Event>
+
+
 }

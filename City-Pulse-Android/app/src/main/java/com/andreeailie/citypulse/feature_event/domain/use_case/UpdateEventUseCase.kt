@@ -7,7 +7,7 @@ import com.andreeailie.citypulse.feature_event.domain.model.InvalidEventExceptio
 import com.andreeailie.citypulse.feature_event.domain.repository.LocalEventRepository
 import com.andreeailie.citypulse.feature_event.domain.repository.RemoteEventRepository
 
-class AddEventUseCase(
+class UpdateEventUseCase(
     private val localRepository: LocalEventRepository,
     private val remoteRepository: RemoteEventRepository,
     private val networkStatusTracker: NetworkStatusTracker
@@ -27,15 +27,15 @@ class AddEventUseCase(
         }
         try {
             if (isNetworkAvailable) {
-                val newEvent = remoteRepository.insertEvent(event)
-                Log.d("AddEventUseCase", "newEvent: $newEvent")
-                localRepository.insertEvent(event.copy(ID = newEvent.ID, action = null))
+                val newEvent = remoteRepository.updateEvent(event)
+                Log.d("UpdateEventUseCase", "newEvent: $newEvent")
+                localRepository.insertEvent(event.copy(ID = event.ID, idLocal = event.idLocal, action = null))
             } else {
-                Log.d("AddEventUseCase", "Add on the local database, no internet")
-                localRepository.insertEvent(event.copy(action = "add"))
+                Log.d("UpdateEventUseCase", "Update on the local database, no internet")
+                localRepository.insertEvent(event.copy(ID = event.ID, idLocal = event.idLocal, action = "update"))
             }
         } catch (e: Exception) {
-            throw Exception("Failed to add the event. Please try again later.")
+            throw Exception("Failed to update the event. Please try again later.")
         }
     }
 }
