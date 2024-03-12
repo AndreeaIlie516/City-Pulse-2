@@ -36,7 +36,7 @@ fun EventCellMainScreen(
 ) {
 
     val drawableId =
-        if (event.is_favourite) R.drawable.favorite_selected_icon else R.drawable.favorite_unselected_icon
+        if (event.isFavourite) R.drawable.favorite_selected_icon else R.drawable.favorite_unselected_icon
     Row(
         modifier = Modifier
             .padding(top = 1.dp, bottom = 8.dp, start = 24.dp, end = 24.dp)
@@ -56,7 +56,7 @@ fun EventCellMainScreen(
         verticalAlignment = Alignment.Top,
 
         ) {
-        if (event.image_url != "") {
+        if (event.imageUrl != "") {
             AsyncImage(
                 modifier = Modifier
                     .padding(start = 10.dp, top = 10.dp, bottom = 10.dp, end = 10.dp)
@@ -70,7 +70,7 @@ fun EventCellMainScreen(
                             bottomRight = 10.dp
                         )
                     ),
-                model = event.image_url,
+                model = event.imageUrl,
                 placeholder = painterResource(id = R.drawable.first_event_photo),
                 contentDescription = "Event image"
             )
@@ -152,7 +152,7 @@ fun EventCellFavoriteScreen(
         verticalAlignment = Alignment.Top,
 
         ) {
-        if (event.image_url != "") {
+        if (event.imageUrl != "") {
             AsyncImage(
                 modifier = Modifier
                     .padding(start = 10.dp, top = 10.dp, bottom = 10.dp, end = 10.dp)
@@ -166,7 +166,7 @@ fun EventCellFavoriteScreen(
                             bottomRight = 10.dp
                         )
                     ),
-                model = event.image_url,
+                model = event.imageUrl,
                 placeholder = painterResource(id = R.drawable.first_event_photo),
                 contentDescription = "Event image"
             )
@@ -201,7 +201,7 @@ fun EventCellFavoriteScreen(
                 fontFamily = FontFamily(Font(R.font.sf_pro_display_bold))
             )
         }
-        if (event.is_private) {
+        if (event.isPrivate) {
             Image(
                 modifier = Modifier
                     .fillMaxWidth()

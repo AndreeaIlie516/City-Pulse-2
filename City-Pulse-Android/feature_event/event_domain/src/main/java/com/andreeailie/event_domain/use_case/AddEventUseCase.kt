@@ -1,7 +1,6 @@
 package com.andreeailie.event_domain.use_case
 
 import android.util.Log
-import com.andreeailie.core.network.NetworkStatusTracker
 import com.andreeailie.event_domain.model.Event
 import com.andreeailie.event_domain.model.InvalidEventException
 import com.andreeailie.event_domain.repository.LocalEventRepository
@@ -29,7 +28,7 @@ class AddEventUseCase(
             if (isNetworkAvailable) {
                 val newEvent = remoteRepository.insertEvent(event)
                 Log.d("AddEventUseCase", "newEvent: $newEvent")
-                localRepository.insertEvent(event.copy(ID = newEvent.ID, action = null))
+                localRepository.insertEvent(event.copy(id = newEvent.id, action = null))
             } else {
                 Log.d("AddEventUseCase", "Add on the local database, no internet")
                 localRepository.insertEvent(event.copy(action = "add"))

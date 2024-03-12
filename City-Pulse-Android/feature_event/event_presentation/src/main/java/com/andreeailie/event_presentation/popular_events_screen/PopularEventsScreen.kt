@@ -68,7 +68,7 @@ private fun EventsList(
         modifier = modifier
     ) {
         items(state.events) { event ->
-            if (!event.is_private) {
+            if (!event.isPrivate) {
                 EventCellMainScreen(
                     modifier = modifier,
                     event = event,

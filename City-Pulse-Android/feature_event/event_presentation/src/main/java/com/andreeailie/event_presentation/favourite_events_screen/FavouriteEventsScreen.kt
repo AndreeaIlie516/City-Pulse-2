@@ -91,18 +91,18 @@ private fun EventsList(
         LazyColumn(
             modifier = modifier
         ) {
-            val filteredEvents = eventList.filter { it.is_favourite || it.is_private }
+            val filteredEvents = eventList.filter { it.isFavourite || it.isPrivate }
             items(filteredEvents) { event ->
                 DeleteItem(event = event,
                     onClickEvent = {},
                     onClickEditEvent = {
                         navController.navigate(
                             com.andreeailie.core.navigation.Screen.AddEditEventScreen.route +
-                                    "?eventId=${event.ID}"
+                                    "?eventId=${event.id}"
                         )
                     },
                     onDelete = {
-                        if (event.is_private) {
+                        if (event.isPrivate) {
                             eventViewModel.onEvent(EventsEvent.DeleteEvent(event))
                         } else {
                             eventViewModel.onEvent(EventsEvent.DeleteEventFromFavourites(event))

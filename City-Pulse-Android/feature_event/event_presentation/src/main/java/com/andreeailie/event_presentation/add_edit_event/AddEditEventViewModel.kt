@@ -69,7 +69,7 @@ constructor(
                 viewModelScope.launch {
 
                     eventUseCases.getEventByIDUseCase(eventId, local = true)?.also { event ->
-                        currentEventId = event.ID
+                        currentEventId = event.id
                         currentEventIdLocal = event.idLocal
                         _eventTime.value = eventTime.value.copy(
                             text = event.time,
@@ -84,7 +84,7 @@ constructor(
                             isHintVisible = false
                         )
                         _eventImagePath.value = eventImagePath.value.copy(
-                            text = event.image_url,
+                            text = event.imageUrl,
                             isHintVisible = false
                         )
                     }
@@ -157,25 +157,25 @@ constructor(
                         val event = if (currentEventId != null) {
                             Event(
                                 idLocal = currentEventIdLocal!!,
-                                ID = currentEventId!!,
+                                id = currentEventId!!,
                                 time = eventTime.value.text,
                                 band = eventBand.value.text,
                                 location = eventLocation.value.text,
-                                image_url = eventImagePath.value.text,
-                                is_favourite = false,
-                                is_private = true,
+                                imageUrl = eventImagePath.value.text,
+                                isFavourite = false,
+                                isPrivate = true,
                                 action = null
                             )
                         } else {
                             Event(
                                 idLocal = 0,
-                                ID = 0,
+                                id = 0,
                                 time = eventTime.value.text,
                                 band = eventBand.value.text,
                                 location = eventLocation.value.text,
-                                image_url = eventImagePath.value.text,
-                                is_favourite = false,
-                                is_private = true,
+                                imageUrl = eventImagePath.value.text,
+                                isFavourite = false,
+                                isPrivate = true,
                                 action = null
                             )
                         }
@@ -200,25 +200,25 @@ constructor(
                         val event = if (currentEventId != null) {
                             Event(
                                 idLocal = currentEventIdLocal!!,
-                                ID = currentEventId!!,
+                                id = currentEventId!!,
                                 time = eventTime.value.text,
                                 band = eventBand.value.text,
                                 location = eventLocation.value.text,
-                                image_url = eventImagePath.value.text,
-                                is_favourite = false,
-                                is_private = true,
+                                imageUrl = eventImagePath.value.text,
+                                isFavourite = false,
+                                isPrivate = true,
                                 action = null
                             )
                         } else {
                             Event(
                                 idLocal = 0,
-                                ID = 0,
+                                id = 0,
                                 time = eventTime.value.text,
                                 band = eventBand.value.text,
                                 location = eventLocation.value.text,
-                                image_url = eventImagePath.value.text,
-                                is_favourite = false,
-                                is_private = true,
+                                imageUrl = eventImagePath.value.text,
+                                isFavourite = false,
+                                isPrivate = true,
                                 action = null
                             )
                         }

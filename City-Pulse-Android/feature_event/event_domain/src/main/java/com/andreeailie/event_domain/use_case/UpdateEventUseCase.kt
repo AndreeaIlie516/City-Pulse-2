@@ -1,7 +1,6 @@
 package com.andreeailie.event_domain.use_case
 
 import android.util.Log
-import com.andreeailie.core.network.NetworkStatusTracker
 import com.andreeailie.event_domain.model.Event
 import com.andreeailie.event_domain.model.InvalidEventException
 import com.andreeailie.event_domain.repository.LocalEventRepository
@@ -29,10 +28,10 @@ class UpdateEventUseCase(
             if (isNetworkAvailable) {
                 val newEvent = remoteRepository.updateEvent(event)
                 Log.d("UpdateEventUseCase", "newEvent: $newEvent")
-                localRepository.insertEvent(event.copy(ID = event.ID, idLocal = event.idLocal, action = null))
+                localRepository.insertEvent(event.copy(id = event.id, idLocal = event.idLocal, action = null))
             } else {
                 Log.d("UpdateEventUseCase", "Update on the local database, no internet")
-                localRepository.insertEvent(event.copy(ID = event.ID, idLocal = event.idLocal, action = "update"))
+                localRepository.insertEvent(event.copy(id = event.id, idLocal = event.idLocal, action = "update"))
             }
         } catch (e: Exception) {
             throw Exception("Failed to update the event. Please try again later.")

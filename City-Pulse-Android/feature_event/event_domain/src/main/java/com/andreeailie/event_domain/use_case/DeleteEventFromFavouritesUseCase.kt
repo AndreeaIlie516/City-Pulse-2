@@ -1,6 +1,5 @@
 package com.andreeailie.event_domain.use_case
 
-import com.andreeailie.core.network.NetworkStatusTracker
 import com.andreeailie.event_domain.model.Event
 import com.andreeailie.event_domain.repository.LocalEventRepository
 import com.andreeailie.event_domain.repository.RemoteEventRepository
@@ -12,50 +11,50 @@ class DeleteEventFromFavouritesUseCase(
 ) {
     suspend operator fun invoke(event: Event) {
         val isNetworkAvailable = networkStatusTracker.isCurrentlyAvailable()
-        val updatedEvent = event.copy(is_favourite = false)
+        val updatedEvent = event.copy(isFavourite = false)
         localRepository.insertEvent(updatedEvent)
         if (isNetworkAvailable) {
             try {
                 localRepository.insertEvent(
                     event.copy(
-                        is_favourite = !event.is_favourite,
+                        isFavourite = !event.isFavourite,
                         action = null
                     )
                 )
-                if (event.is_favourite) {
+                if (event.isFavourite) {
                     remoteRepository.deleteEventFromFavorites(event)
                 } else {
                     remoteRepository.addEventToFavorites(event)
                 }
             } catch (e: Exception) {
-                if (event.is_favourite) {
+                if (event.isFavourite) {
                     localRepository.insertEvent(
                         event.copy(
-                            is_favourite = false,
+                            isFavourite = false,
                             action = "add_to_favourites"
                         )
                     )
                 } else {
                     localRepository.insertEvent(
                         event.copy(
-                            is_favourite = true,
+                            isFavourite = true,
                             action = "delete_from_favourites"
                         )
                     )
                 }
             }
         } else {
-            if (event.is_favourite) {
+            if (event.isFavourite) {
                 localRepository.insertEvent(
                     event.copy(
-                        is_favourite = false,
+                        isFavourite = false,
                         action = "add_to_favourites"
                     )
                 )
             } else {
                 localRepository.insertEvent(
                     event.copy(
-                        is_favourite = true,
+                        isFavourite = true,
                         action = "delete_from_favourites"
                     )
                 )

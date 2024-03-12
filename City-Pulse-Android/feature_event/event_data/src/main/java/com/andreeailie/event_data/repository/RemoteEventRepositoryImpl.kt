@@ -49,9 +49,9 @@ class RemoteEventRepositoryImpl(
                 time = event.time,
                 band = event.band,
                 location = event.location,
-                image_url = event.image_url,
-                is_private = event.is_private,
-                is_favourite = event.is_favourite
+                imageUrl = event.imageUrl,
+                isPrivate = event.isPrivate,
+                isFavourite = event.isFavourite
             )
             Log.d("RemoteEventRepositoryImpl", "insertEvent called")
             val response = eventApi.createEvent(eventForServer)
@@ -69,8 +69,8 @@ class RemoteEventRepositoryImpl(
     override suspend fun deleteEvent(event: Event) {
         Log.d("RemoteEventRepositoryImpl", "deleteEvent called")
         try {
-            Log.d("RemoteEventRepositoryImpl", "Id: ${event.ID}")
-            eventApi.deleteEvent(event.ID)
+            Log.d("RemoteEventRepositoryImpl", "Id: ${event.id}")
+            eventApi.deleteEvent(event.id)
         } catch (e: Exception) {
             Log.e("RemoteEntityRepositoryImpl", "Error deleting entity: ${e.message}")
             throw Exception("Server error occurred while deleting the entity.")
@@ -83,12 +83,12 @@ class RemoteEventRepositoryImpl(
                 time = event.time,
                 band = event.band,
                 location = event.location,
-                image_url = event.image_url,
-                is_private = event.is_private,
-                is_favourite = event.is_favourite
+                imageUrl = event.imageUrl,
+                isPrivate = event.isPrivate,
+                isFavourite = event.isFavourite
             )
             Log.d("RemoteEventRepositoryImpl", "updateEvent called")
-            eventApi.updateEvent(event.ID, eventForServer)
+            eventApi.updateEvent(event.id, eventForServer)
         } catch (e: Exception) {
             Log.e("RemoteEventRepository", "Error updating event: ${e.message}")
             throw Exception("Server error occurred while updating the event.")
@@ -96,10 +96,10 @@ class RemoteEventRepositoryImpl(
     }
 
     override suspend fun addEventToFavorites(event: Event) {
-        eventApi.addToFavourites(event.ID)
+        eventApi.addToFavourites(event.id)
     }
 
     override suspend fun deleteEventFromFavorites(event: Event) {
-        eventApi.deleteFromFavourites(event.ID)
+        eventApi.deleteFromFavourites(event.id)
     }
 }

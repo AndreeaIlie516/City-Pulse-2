@@ -1,7 +1,6 @@
 package com.andreeailie.event_domain.use_case
 
 import android.util.Log
-import com.andreeailie.core.network.NetworkStatusTracker
 import com.andreeailie.event_domain.model.Event
 import com.andreeailie.event_domain.repository.LocalEventRepository
 import com.andreeailie.event_domain.repository.RemoteEventRepository
@@ -21,7 +20,7 @@ class DeleteEventUseCase(
                 Log.d("DeleteEventUseCase", "Deleted event: $event")
             } else {
                 Log.d("DeleteEventUseCase", "Delete on the local database, no internet")
-                localRepository.insertEvent(event.copy(ID = event.ID, idLocal = event.idLocal, action = "delete"))
+                localRepository.insertEvent(event.copy(id = event.id, idLocal = event.idLocal, action = "delete"))
             }
         }  catch (e: Exception) {
             throw Exception("Failed to delete the event. Please try again later.")
