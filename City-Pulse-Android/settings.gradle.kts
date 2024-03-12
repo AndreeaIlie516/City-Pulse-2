@@ -1,6 +1,12 @@
 pluginManagement {
     repositories {
-        google()
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
         mavenCentral()
         gradlePluginPortal()
     }
@@ -15,3 +21,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "CityPulse"
 include(":app")
+include(":core")
+include(":feature_event")
+include(":feature_event:event_data")
+include(":feature_event:event_domain")
+include(":feature_event:event_presentation")
