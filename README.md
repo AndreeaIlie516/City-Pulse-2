@@ -79,15 +79,15 @@ This REST API provides a robust backend for applications focused on event discov
 
 ## Important Associations
 
-* **Event-Artist Relationships ( /event-artist )**
+* **Event-Artist Relationships (`/event-artist`)**
     * Manage associations between events and artists 
     * Retrieve events for a specific artist or vice versa
 
-* **Artist-Genre Relationships ( /artist-genre )**
+* **Artist-Genre Relationships (`/artist-genre`)**
     * Manage associations between artists and genres
     * Find artists with a specific genre or vice versa 
 
-* **Favourite Events ( /favourite-events )**
+* **Favourite Events (`/favourite-events`)**
     * Users can mark events as favourites
     * Retrieve favourites for a specific user 
 
